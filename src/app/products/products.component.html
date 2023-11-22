@@ -17,30 +17,42 @@
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            Category 1
+            {{categories[0]}}
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-list role="list">
-          <mat-list-item role="listitem"><button mat-button>Item 1</button></mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item role="listitem"><button mat-button>Item 2</button></mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item role="listitem"><button mat-button>Item 3</button></mat-list-item>
+          <div *ngFor="let food of foodCategories">
+            <mat-list-item role="listitem"><button mat-button>{{food.naziv}}</button></mat-list-item>
+            <mat-divider></mat-divider>
+          </div>
         </mat-list>
       </mat-expansion-panel>
       <mat-expansion-panel (opened)="panelOpenState = true"
                            (closed)="panelOpenState = false">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            Category 2
+            {{categories[1]}}
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-list role="list">
-          <mat-list-item role="listitem"><button mat-button (click)="showCard = !showCard">Item 1</button></mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item role="listitem"><button mat-button>Item 2</button></mat-list-item>
-          <mat-divider></mat-divider>
-          <mat-list-item role="listitem"><button mat-button>Item 3</button></mat-list-item>
+          <div *ngFor="let tex of textileCategories">
+            <mat-list-item role="listitem"><button mat-button (click)="showCard = !showCard">{{tex.naziv}}</button></mat-list-item>
+            <mat-divider></mat-divider>
+          </div>
+        </mat-list>
+      </mat-expansion-panel>
+      <mat-expansion-panel (opened)="panelOpenState = true"
+                           (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{categories[2]}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list role="list">
+          <div *ngFor="let other of otherCategories">
+            <mat-list-item role="listitem"><button mat-button (click)="showCard = !showCard">{{other.naziv}}</button></mat-list-item>
+            <mat-divider></mat-divider>
+          </div>
         </mat-list>
       </mat-expansion-panel>
     </mat-drawer> 
