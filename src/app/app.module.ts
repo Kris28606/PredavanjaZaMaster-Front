@@ -16,11 +16,13 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClientModule } from '@angular/common/http';
+import { ImageGalleryComponent } from './gallery/image-gallery/image-gallery.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProductsComponent
+    ProductsComponent,
+    ImageGalleryComponent
   ],
   imports: [
     BrowserModule,

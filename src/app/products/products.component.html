@@ -22,7 +22,7 @@
         </mat-expansion-panel-header>
         <mat-list role="list">
           <div *ngFor="let food of foodCategories">
-            <mat-list-item role="listitem"><button mat-button>{{food.naziv}}</button></mat-list-item>
+            <mat-list-item role="listitem"><button mat-button (click)="getProducts(food.id)">{{food.naziv}}</button></mat-list-item>
             <mat-divider></mat-divider>
           </div>
         </mat-list>
@@ -36,7 +36,7 @@
         </mat-expansion-panel-header>
         <mat-list role="list">
           <div *ngFor="let tex of textileCategories">
-            <mat-list-item role="listitem"><button mat-button (click)="showCard = !showCard">{{tex.naziv}}</button></mat-list-item>
+            <mat-list-item role="listitem"><button mat-button (click)="getProducts(tex.id)">{{tex.naziv}}</button></mat-list-item>
             <mat-divider></mat-divider>
           </div>
         </mat-list>
@@ -50,72 +50,55 @@
         </mat-expansion-panel-header>
         <mat-list role="list">
           <div *ngFor="let other of otherCategories">
-            <mat-list-item role="listitem"><button mat-button (click)="showCard = !showCard">{{other.naziv}}</button></mat-list-item>
+            <mat-list-item role="listitem"><button mat-button (click)="getProducts(other.id)">{{other.naziv}}</button></mat-list-item>
             <mat-divider></mat-divider>
           </div>
         </mat-list>
       </mat-expansion-panel>
     </mat-drawer> 
     <mat-drawer-content *ngIf="showCard" [ngClass]="drawer.opened ? 'two-grid':'three-grid'">
-      
+      <div *ngFor="let product of products">
         <mat-card class="example-card">
           <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>Shiba Inu</mat-card-title>
-            <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+            <div class="example-header-image"></div>
+            <mat-card-title>{{product.naziv}}</mat-card-title>
+            <mat-card-subtitle>{{product.datumKreiranja | date: 'dd.MM.yyyy.'}}</mat-card-subtitle>
           </mat-card-header>
-          <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+          <!-- <app-image-gallery></app-image-gallery> -->
+          <img mat-card-image src={{getMainUrl(product)}} alt="No content photo" style="height: 250px;">
           <mat-card-content style="padding-top: 10px;">
-            <p>
-              The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-              A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-              bred for hunting.
-            </p>
+            Manufacturer: {{product.proizvodjac.name}}
           </mat-card-content>
           <mat-card-actions>
-            <button mat-button>LIKE</button>
-            <button mat-button>SHARE</button>
+            <button mat-button (click)="showProductInfos(product.id)">VIEW MORE</button>
           </mat-card-actions>
         </mat-card>
-        <mat-card class="example-card" *ngIf="showCard">
+      </div>
+    </mat-drawer-content >
+
+
+    <mat-drawer-content *ngIf="showProductInfo"> 
+      <div *ngFor="let product of productInfos">
+        <mat-card class="example-card">
           <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>Shiba Inu</mat-card-title>
-            <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+            <div class="example-header-image"></div>
+            <mat-card-title>{{product.sifra}}  {{product.brend}}</mat-card-title>
+            <mat-card-subtitle>{{product.zemljaPorekla}}</mat-card-subtitle>
           </mat-card-header>
-          <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-          <mat-card-content>
-            <p>
-              The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-              A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-              bred for hunting.
-            </p>
+          
+          <!-- <img mat-card-image src="https://www.bigpharmacy.com.my/scripts/timthumb.php?src=https://www.bigpharmacy.com.my//site_media/img/106897EA.jpg&w=500&zc=1" alt="No content photo"> -->
+          <mat-card-content style="padding-top: 10px;">
+          <p><b>Opis: </b>{{product.kratakOpisProizvod}}</p>
+            <p><b>Cena: </b>{{product.maloprodajnaCena}} RSD</p> 
+            <p><b>Dostupnost: </b>{{product.dostupnost}}</p> 
           </mat-card-content>
           <mat-card-actions>
-            <button mat-button>LIKE</button>
-            <button mat-button>SHARE</button>
+            <button mat-button (click)="goBack()">GO BACK</button>
           </mat-card-actions>
         </mat-card>
-        <mat-card class="example-card" *ngIf="showCard">
-          <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>Shiba Inu</mat-card-title>
-            <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-          <mat-card-content>
-            <p>
-              The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-              A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-              bred for hunting.
-            </p>
-          </mat-card-content>
-          <mat-card-actions>
-            <button mat-button>LIKE</button>
-            <button mat-button>SHARE</button>
-          </mat-card-actions>
-        </mat-card>
+      </div>
     </mat-drawer-content>
+
   
 </mat-drawer-container>
 

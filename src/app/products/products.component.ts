@@ -9,6 +9,10 @@ import Swal from 'sweetalert2';
 import { FoodCategory } from '../models/FoodCategory';
 import { OtherCategory } from '../models/OtherCategory';
 import { TextileCategory } from '../models/TextileCategory';
+import { ProductService } from '../services/product.service';
+import { Product } from '../models/Product';
+import { ProductInfoService } from '../services/productInfo.service';
+import { ProductInfo } from '../models/ProductInfo';
 
 @Component({
   selector: 'app-products',
@@ -21,8 +25,14 @@ export class ProductsComponent implements OnInit{
   public foodCategories: FoodCategory[] = [];
   public textileCategories: TextileCategory[] = [];
   public otherCategories: OtherCategory[] = [];
+  public products: Product[]=[];
+  public productInfos: ProductInfo[]=[];
 
-  constructor(public categoryService: CategoryService) {
+  constructor(
+    public categoryService: CategoryService,
+    public productService: ProductService,
+    public productInfoService: ProductInfoService
+    ) {
   }
   ngOnInit(): void {
     this.initData();
@@ -30,6 +40,7 @@ export class ProductsComponent implements OnInit{
 
   showCard = false;
   panelOpenState = false;
+  showProductInfo = false;
   step = 0;
 
   setStep(index: number) {
@@ -71,6 +82,46 @@ export class ProductsComponent implements OnInit{
   }
 
   getProducts(categoryId: number) {
-    
+    this.productService.getAllProductsByCategoryWithPictures(categoryId).subscribe(data=> {
+      this.products=data;
+      console.log(data,'data');
+      this.showCard=true;
+    }, error => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Sorry. We can’t find products!'
+      });
+      console.log(error.message);
+    });
+  }
+
+  showProductInfos(productId: number) {
+    this.productInfoService.getInfoProductsForProduct(productId).subscribe(data=> {
+      this.productInfos=data;
+      this.showCard=false;
+      this.showProductInfo=true;
+    }, error => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Sorry. We can’t find products!'
+      });
+      console.log(error.message);
+    });
+  }
+
+  goBack() {
+    this.showProductInfo=false;
+    this.showCard=true;
+  }
+
+  getMainUrl(product: Product) {
+    const mainPic = product.pictures.find(pic=> pic.main===true);
+    if(mainPic!==undefined) {
+      return mainPic.url;
+    } else {
+      return '';
+    }
   }
 }
